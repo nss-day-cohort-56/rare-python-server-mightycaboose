@@ -96,3 +96,5 @@ INSERT INTO PostTags ('post_id', 'tag_id') VALUES (1, 1);
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'content', 'approved') VALUES (1, 1, 'the first one', '2022-07-26 11:21:52.741174', 'look at all this content', 1);
 INSERT INTO Reactions ('label') VALUES ('Oh My');
 INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on')  VALUES (1,1, '2022-07-26 11:21:52.741174');
+
+DELETE FROM Categories WHERE id = 2

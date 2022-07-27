@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
-
+from views import (get_all_categories)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -51,8 +51,27 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
+        self._set_headers(200)
+        response = {}  # Default response
 
+        # Parse URL and store entire tuple in a variable
+        parsed = self.parse_url()
+        # Response from parse_url() is a tuple with 2
+        # items in it, which means the request was for
+        # `/animals` or `/animals/2`
+        if '?' not in self.path:
+            ( resource, id ) = parsed
+
+            if resource == "categories":
+                response = f"{get_all_categories()}"
+                
+            # else:
+            # (resource, query) = parsed
+
+            # if query.get('q') and resource == 'entries':
+            #     response = get_entry_by_search(query['q'][0])
+            
+        self.wfile.write(response.encode()) 
 
     def do_POST(self):
         """Make a post request to the server"""
