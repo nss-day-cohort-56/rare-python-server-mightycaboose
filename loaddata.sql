@@ -98,3 +98,6 @@ INSERT INTO Reactions ('label') VALUES ('Oh My');
 INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on')  VALUES (1,1, '2022-07-26 11:21:52.741174');
 
 DELETE FROM Categories WHERE id = 2
+
+INSERT INTO Categories ('label') VALUES ('Fun');
+INSERT INTO Categories ('label') VALUES ('Mirth');
