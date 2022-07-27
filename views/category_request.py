@@ -2,7 +2,7 @@ import sqlite3
 import json
 from models import Category
 
-def get_all_categories():
+def get_all_categories_asc():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
 
@@ -16,6 +16,7 @@ def get_all_categories():
             c.id,
             c.label
         FROM Categories c
+        ORDER BY c.label
         """)
 
         # Initialize an empty list to hold all animal representations

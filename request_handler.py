@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
-from views import (get_all_categories)
+from views import (get_all_categories_asc)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -63,7 +63,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             ( resource, id ) = parsed
 
             if resource == "categories":
-                response = f"{get_all_categories()}"
+                response = f"{get_all_categories_asc()}"
                 
             # else:
             # (resource, query) = parsed
