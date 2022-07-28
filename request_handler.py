@@ -1,8 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
 from views.user import create_user, login_user
-from views import (get_all_categories_asc, create_category)
+from views import (get_all_categories_asc, create_category, get_all_posts)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -44,9 +43,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -64,6 +63,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "categories":
                 response = f"{get_all_categories_asc()}"
+            if resource == "posts":
+                response = f"{get_all_posts()}"
                 
             # else:
             # (resource, query) = parsed
@@ -71,7 +72,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             # if query.get('q') and resource == 'entries':
             #     response = get_entry_by_search(query['q'][0])
             
-        self.wfile.write(response.encode()) 
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         """Make a post request to the server"""
