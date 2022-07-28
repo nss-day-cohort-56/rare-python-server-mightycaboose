@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.tag_request import get_all_tags
 from views.user import create_user, login_user
-from views import (get_all_categories_asc, create_category, get_all_posts)
+from views import (get_all_categories_asc, create_category, delete_category, get_all_posts)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -91,7 +91,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
-        
 
         self.wfile.write(response.encode())
 
@@ -101,7 +100,14 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url()
+
+        if resource == "categories":
+            delete_category(id)
+
+        self.wfile.write("".encode())
 
 
 def main():

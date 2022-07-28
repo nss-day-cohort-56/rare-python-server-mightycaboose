@@ -86,6 +86,8 @@ CREATE TABLE "Categories" (
 );
 
 INSERT INTO Categories ('label') VALUES ('News');
+INSERT INTO Categories ('label') VALUES ('Fun');
+INSERT INTO Categories ('label') VALUES ('Mirth');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password', 'created_on', 'active') VALUES ('Carlos', 'Murphey', 'murphey37@gmail.com', 'its me, carlos', 'CarlosMurphey', 'iamcarlos', '2022-07-26 11:21:52.741174', '1');
@@ -99,7 +101,6 @@ INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on')  VALUES (1,
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'content', 'approved') VALUES (1, 2, 'the second one', '2022-07-26 12:21:52.741174', 'look at all this other stuff and content', 1);
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'content', 'approved') VALUES (1, 3, 'the third one', '2022-07-26 08:21:52.741174', 'look at this. it''s a third stuff!', 1);
 
-DELETE FROM Categories WHERE id = 2
 
 INSERT INTO Categories ('label') VALUES ('Fun');
 INSERT INTO Categories ('label') VALUES ('Mirth');
