@@ -1,1 +1,1 @@
-from .category_request import (get_all_categories_asc, create_category)
+from .category_request import (get_all_categories_asc, create_category, update_category)
