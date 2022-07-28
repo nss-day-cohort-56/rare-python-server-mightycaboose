@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from views.tag_request import get_all_tags
 from views.user import create_user, login_user
 from views import (get_all_categories_asc, create_category, get_all_posts)
 
@@ -65,6 +66,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = f"{get_all_categories_asc()}"
             if resource == "posts":
                 response = f"{get_all_posts()}"
+            if resource == "tags":
+                response = f"{get_all_tags()}"
                 
             # else:
             # (resource, query) = parsed
