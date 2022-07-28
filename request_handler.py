@@ -1,8 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
 from views.user import create_user, login_user
-from views import (get_all_categories_asc, create_category, update_category)
+from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -44,9 +43,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -64,6 +63,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "categories":
                 response = f"{get_all_categories_asc()}"
+            if resource == "posts":
+                response = f"{get_all_posts()}"
                 
             # else:
             # (resource, query) = parsed
@@ -87,7 +88,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
-        
 
         self.wfile.write(response.encode())
 
@@ -115,7 +115,14 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url()
+
+        if resource == "categories":
+            delete_category(id)
+
+        self.wfile.write("".encode())
 
 
 def main():
