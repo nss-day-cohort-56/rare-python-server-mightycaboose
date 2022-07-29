@@ -18,6 +18,7 @@ def get_all_tags():
             t.label
             
         FROM Tags t
+        ORDER BY t.label
         """)
 
         # Initialize an empty list
