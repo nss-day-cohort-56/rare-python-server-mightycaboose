@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
 from views.user import create_user, login_user
-from views import (get_all_categories_asc, create_category, get_all_posts, get_posts_by_user_id)
+from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category, get_posts_by_user_id)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -89,17 +89,41 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
-        
 
         self.wfile.write(response.encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url()
+
+        success = False
+
+        if resource == "categories":
+            success = update_category(id, post_body)
+        # rest of the elif's
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url()
+
+        if resource == "categories":
+            delete_category(id)
+
+        self.wfile.write("".encode())
 
 
 def main():

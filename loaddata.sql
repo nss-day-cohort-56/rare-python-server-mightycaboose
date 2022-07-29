@@ -86,6 +86,8 @@ CREATE TABLE "Categories" (
 );
 
 INSERT INTO Categories ('label') VALUES ('News');
+INSERT INTO Categories ('label') VALUES ('Fun');
+INSERT INTO Categories ('label') VALUES ('Mirth');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password', 'created_on', 'active') VALUES ('Carlos', 'Murphey', 'murphey37@gmail.com', 'its me, carlos', 'CarlosMurphey', 'iamcarlos', '2022-07-26 11:21:52.741174', '1');
@@ -100,6 +102,12 @@ INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'conte
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'content', 'approved') VALUES (1, 3, 'the third one', '2022-07-26 08:21:52.741174', 'look at this. it''s a third stuff!', 1);
 
 DELETE FROM Categories WHERE id = 2
+DELETE FROM Users WHERE id = 2
+DELETE FROM Posts WHERE user_id = 2
 
 INSERT INTO Categories ('label') VALUES ('Fun');
 INSERT INTO Categories ('label') VALUES ('Mirth');
+
+
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'content', 'approved') VALUES (2, 1, 'the first one from a different user', '2022-07-26 11:21:52.741174', 'look at all this content', 1);
+INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password', 'created_on', 'active') VALUES ('Carlos', 'Murphey', 'murphey37@gmail.com', 'its me, carlos', 'CarlosMurphey', 'iamcarlos', '2022-07-26 11:21:52.741174', '1');

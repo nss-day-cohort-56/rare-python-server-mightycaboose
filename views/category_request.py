@@ -3,6 +3,8 @@ import json
 from models import Category
 
 def get_all_categories_asc():
+    """Function to get all categories from the database
+    """
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
 
@@ -40,6 +42,8 @@ def get_all_categories_asc():
     return json.dumps(categories)
 
 def create_category(new_category):
+    """Function to create new category in database
+    """
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
@@ -61,4 +65,39 @@ def create_category(new_category):
         new_category['id'] = id
 
 
-    return json.dumps(new_category)    
+    return json.dumps(new_category)
+
+def update_category(id, new_category):
+    """update name of category"""
+
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Categories
+            SET
+                label = ?
+        WHERE id = ?
+        """, (new_category['label'], id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
+    
+def delete_category(id):
+    """Function to delete category from database that matches id given as argument
+    """
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Categories
+        WHERE id = ?
+        """, (id, ))
