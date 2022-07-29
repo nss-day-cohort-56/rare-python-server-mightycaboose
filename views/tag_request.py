@@ -63,3 +63,14 @@ def create_tag(new_tag):
         # Hannah said I didn't need the additional lines of codes, deleted it
        
     return json.dumps(new_tag)
+
+def delete_tag(id):
+    """Function to delete category from database that matches id given as argument
+    """
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Tags
+        WHERE id = ?
+        """, (id, ))
