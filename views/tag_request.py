@@ -44,11 +44,11 @@ def create_tag(new_tag):
     Returns:
         dict: The tag that was added with its new id
     """""
-    with sqlite3.connect("./db.sqlite3.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Posts
+        INSERT INTO Tags
             ( label )
         VALUES
             ( ? );
@@ -59,17 +59,6 @@ def create_tag(new_tag):
         # the database.
         id = db_cursor.lastrowid
 
-        # Add the `id` property to the entry dictionary that
-        # was sent by the client so that the client sees the
-        # primary key in the response.
-        new_tag['id'] = id
-        for tag in new_entry['tags']:
-            
-            db_cursor.execute("""
-            INSERT INTO EntryTag
-                ( entry_id, tag_id ) 
-            VALUES
-                ( ?, ?);
-            """, (id, tag))
-
-    return json.dumps(new_entry)
+        # Hannah said I didn't need the additional lines of codes, deleted it
+       
+    return json.dumps(new_tag)
