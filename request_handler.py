@@ -1,29 +1,28 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from urllib.parse import urlparse, parse_qs
 from views.user import create_user, login_user
-from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category)
+from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category, get_posts_by_user_id)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
     def parse_url(self):
         """Parse the url into the resource and id"""
-        path_params = self.path.split('/')
+        parsed_url = urlparse(self.path)
+        path_params = parsed_url.path.split('/')  # ['', 'animals', 1]
         resource = path_params[1]
-        if '?' in resource:
-            param = resource.split('?')[1]
-            resource = resource.split('?')[0]
-            pair = param.split('=')
-            key = pair[0]
-            value = pair[1]
-            return (resource, key, value)
-        else:
-            id = None
-            try:
-                id = int(path_params[2])
-            except (IndexError, ValueError):
-                pass
-            return (resource, id)
+
+        if parsed_url.query:
+            query = parse_qs(parsed_url.query)
+            return (resource, query)
+
+        pk = None
+        try:
+            pk = int(path_params[2])
+        except (IndexError, ValueError):
+            pass
+        return (resource, pk)
 
     def _set_headers(self, status):
         """Sets the status code, Content-Type and Access-Control-Allow-Origin
@@ -66,11 +65,13 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "posts":
                 response = f"{get_all_posts()}"
                 
-            # else:
-            # (resource, query) = parsed
+        else:
 
-            # if query.get('q') and resource == 'entries':
-            #     response = get_entry_by_search(query['q'][0])
+            
+            (resource, query) = parsed
+
+            if query.get('q') and resource == 'posts':
+                response = get_posts_by_user_id(query['q'][0])
             
         self.wfile.write(response.encode())
 
