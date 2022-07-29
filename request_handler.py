@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from views.tag_request import create_tag, get_all_tags
 from urllib.parse import urlparse, parse_qs
 from views.user import create_user, login_user
 from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category, get_posts_by_user_id)
@@ -64,6 +65,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = f"{get_all_categories_asc()}"
             if resource == "posts":
                 response = f"{get_all_posts()}"
+            if resource == "tags":
+                response = f"{get_all_tags()}"
                 
         else:
 
@@ -89,6 +92,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+        if resource == 'tags':
+            response = create_tag(post_body)
 
         self.wfile.write(response.encode())
 
