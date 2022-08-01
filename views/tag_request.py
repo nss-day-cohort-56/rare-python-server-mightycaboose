@@ -34,7 +34,7 @@ def get_all_tags():
             tag = Tag(row ['id'], row['label'])
 
             tags.append(tag.__dict__)
-    
+
     # Serialize list as JSON
     return json.dumps(tags)
 
@@ -61,7 +61,7 @@ def create_tag(new_tag):
         id = db_cursor.lastrowid
 
         # Hannah said I didn't need the additional lines of codes, deleted it
-       
+
     return json.dumps(new_tag)
 
 def delete_tag(id):
@@ -74,3 +74,27 @@ def delete_tag(id):
         DELETE FROM Tags
         WHERE id = ?
         """, (id, ))
+
+def update_tag(id, new_tag):
+    """update name of category"""
+
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Tags
+            SET
+                label = ?
+        WHERE id = ?
+        """, (new_tag['label'], id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True

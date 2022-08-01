@@ -7,4 +7,5 @@ from .post_request import (get_all_posts,
                         get_single_post)
 from .tag_request import (get_all_tags,
                         create_tag,
-                        delete_tag)
+                        delete_tag,
+                        update_tag)
