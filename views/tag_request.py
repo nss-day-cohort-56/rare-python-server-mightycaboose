@@ -63,3 +63,38 @@ def create_tag(new_tag):
         # Hannah said I didn't need the additional lines of codes, deleted it
        
     return json.dumps(new_tag)
+
+def delete_tag(id):
+    """Function to delete category from database that matches id given as argument
+    """
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Tags
+        WHERE id = ?
+        """, (id, ))
+
+def update_tag(id, new_tag):
+    """update name of category"""
+
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Tags
+            SET
+                label = ?
+        WHERE id = ?
+        """, (new_tag['label'], id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
