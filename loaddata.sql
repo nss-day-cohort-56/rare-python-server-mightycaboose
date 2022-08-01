@@ -107,6 +107,7 @@ DELETE FROM Posts WHERE user_id = 2
 
 INSERT INTO Categories ('label') VALUES ('Fun');
 INSERT INTO Categories ('label') VALUES ('Mirth');
+INSERT INTO Categories ('id','label') VALUES ('1', 'Merriment');
 
 
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'content', 'approved') VALUES (2, 1, 'the first one from a different user', '2022-07-26 11:21:52.741174', 'look at all this content', 1);

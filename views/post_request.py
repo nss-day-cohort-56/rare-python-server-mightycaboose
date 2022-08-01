@@ -1,8 +1,9 @@
 import sqlite3
 import json
-from models import Post, post
+from models import Post, User, Category
 
 def get_all_posts():
+    """method to retrieve posts with """
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
     
@@ -20,8 +21,15 @@ def get_all_posts():
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved
+            p.approved,
+            u.first_name user_first_name,
+            u.last_name user_last_name,
+            c.label category_label
         FROM Posts p
+        JOIN Users u
+            ON u.id = p.user_id
+        LEFT JOIN Categories c
+            ON c.id = p.category_id
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -37,8 +45,16 @@ def get_all_posts():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Animal class above.
-            post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
+            post = Post(row['id'], row['user_id'], row['category_id'], 
+                            row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
+            user = User(row['id'], row['user_first_name'], row['user_last_name'], '', '', '', '', '', '', '')
 
+            category = Category(row['id'], row['category_label'] )
+
+            post.user = user.__dict__
+
+            post.category = category.__dict__
+            
             posts.append(post.__dict__)
 
     # Use `json` package to properly serialize list as JSON
@@ -59,8 +75,15 @@ def get_posts_by_user_id(user_id):
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved
+            p.approved,
+            u.first_name user_first_name,
+            u.last_name user_last_name,
+            c.label category_label
         FROM Posts p
+        JOIN Users u
+            ON u.id = p.user_id
+        LEFT JOIN Categories c
+            ON c.id = p.category_id
         WHERE user_id = ?
         """, ( user_id, ))
 
@@ -71,6 +94,14 @@ def get_posts_by_user_id(user_id):
         for row in dataset:
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
                             row['publication_date'], row['image_url'], row['content'], row['approved'])
+            user = User(row['id'], row['user_first_name'], row['user_last_name'], '', '', '', '', '', '', '')
+
+            category = Category(row['id'], row['category_label'] )
+
+            post.user = user.__dict__
+
+            post.category = category.__dict__
+            
             posts.append(post.__dict__)
 
     return json.dumps(posts)
