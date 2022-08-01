@@ -3,7 +3,7 @@ import json
 from views.tag_request import create_tag, get_all_tags
 from urllib.parse import urlparse, parse_qs
 from views.user import create_user, login_user
-from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category, get_posts_by_user_id, get_single_post)
+from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category, get_posts_by_user_id, get_single_post, update_post)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -113,6 +113,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "categories":
             success = update_category(id, post_body)
+
+        if resource == "posts":
+            success = update_post(id, post_body)
         # rest of the elif's
 
         if success:
