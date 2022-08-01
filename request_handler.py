@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views.tag_request import delete_tag
+from views.tag_request import delete_tag, update_tag
 from views.user import create_user, login_user
 from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category, get_posts_by_user_id, create_tag, get_all_tags, delete_tag)
 
@@ -111,6 +111,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "categories":
             success = update_category(id, post_body)
         # rest of the elif's
+
+        elif resource == "tags":
+            success = update_tag(id, post_body)
 
         if success:
             self._set_headers(204)
