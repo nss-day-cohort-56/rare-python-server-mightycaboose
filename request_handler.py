@@ -3,7 +3,16 @@ import json
 from urllib.parse import urlparse, parse_qs
 from views.tag_request import delete_tag, update_tag
 from views.user import create_user, login_user
-from views import (get_all_categories_asc, create_category, delete_category, get_all_posts, update_category, get_posts_by_user_id, create_tag, get_all_tags, delete_tag)
+from views import (get_all_categories_asc,
+                create_category,
+                delete_category,
+                get_all_posts,
+                update_category,
+                get_posts_by_user_id,
+                get_single_post,
+                create_tag,
+                get_all_tags,
+                delete_tag)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -64,18 +73,19 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "categories":
                 response = f"{get_all_categories_asc()}"
             if resource == "posts":
-                response = f"{get_all_posts()}"
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
             if resource == "tags":
                 response = f"{get_all_tags()}"
-                
-        else:
 
-            
+        else:
             (resource, query) = parsed
 
             if query.get('q') and resource == 'posts':
                 response = get_posts_by_user_id(query['q'][0])
-            
+
         self.wfile.write(response.encode())
 
     def do_POST(self):

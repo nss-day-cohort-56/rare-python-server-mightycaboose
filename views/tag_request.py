@@ -34,7 +34,7 @@ def get_all_tags():
             tag = Tag(row ['id'], row['label'])
 
             tags.append(tag.__dict__)
-    
+
     # Serialize list as JSON
     return json.dumps(tags)
 
@@ -61,7 +61,7 @@ def create_tag(new_tag):
         id = db_cursor.lastrowid
 
         # Hannah said I didn't need the additional lines of codes, deleted it
-       
+
     return json.dumps(new_tag)
 
 def delete_tag(id):
